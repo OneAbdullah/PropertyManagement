@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+    <html lang="en">
+
+        <head>
+            <title>Building Management - Invoices</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+        </head>
+        
+        <body>
+            <br><br>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-head text-center">
+                                Apartment Details
+                            </div>
+                            <div class="card-body">
+                                {% if message %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{message}}
+                                    </div>
+                                {% endif %}
+                                <form method="post" action="{% url 'edit-apartment-form' aobj.id %}">{% csrf_token %}
+                                    <input type="number" class="form-control" required name="num" placeholder="Enter The Apartment Number" value="{{aobj.aprt_number}}"><br>
+                                    <input type="text" class="form-control" required name="name" placeholder="Enter The Name Of Apartment" value="{{aobj.name}}"><br>
+                                    <input type="number" class="form-control" required name="phone" placeholder="Enter Phone Number" value="{{aobj.phone_nmber}}"><br>
+                                    <select class="form-control" required name="type_of">
+                                        <option {% if aobj.type_of == 'شقة' %}selected{% endif %} >شقة</option>
+                                        <option {% if aobj.type_of == 'غرفة' %}selected{% endif %} >غرفة</option>
+                                        <option {% if aobj.type_of == 'دور' %}selected{% endif %} >دور</option>
+                                    </select><br>
+                                    
+                                    <input type="number" class="form-control" required name="cnum" placeholder="رقم العقد" value="{{aobj.contract_number}}"><br>
+                                    <input type="number" class="form-control" required name="enum" placeholder="حساب الكهرباء" value="{{aobj.elect_number}}"><br>
+                                    <label>Comments</label>
+                                    <textarea class="form-control" required name="note">{{aobj.note}} </textarea><br>
+                                    <button class="btn btn-primary text-center" type="submit">
+                                        Save Changes
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-head text-center">
+                                <a href="{% url 'apartments' aobj.building.id %}"><-Back</a>&ensp;&ensp;&ensp; Building - {{aobj.building.name}} &ensp; Apartment - {{aobj.aprt_number}}<br><br>
+
+                                <form method="post" id="sort-form">{% csrf_token %}</form>
+                                <div class="form-inline">
+                                    &ensp;&ensp;&ensp;<button class="btn btn-primary" form="sort-form" onclick="this.form.submit();">
+                                        Sort by Issued Date
+                                    </button>&nbsp; : &nbsp;
+                                    <select class="form-control" form="sort-form" name="asc_desc">
+                                        <option value="0" {% if order == '0' %}selected{% endif %} >Ascending</option>
+                                        <option value="1" {% if order == '1' %}selected{% endif %} >Descending</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                {% if objs %}
+                                    <table class="table">
+                                        <tr>
+                                            <td>الباقي</td>
+                                            <td>إلى</td>
+                                            <td>من</td>
+                                            <td>تاريخ السند</td>
+                                            <td>رقم السند</td>
+                                            <td>المبلغ</td>
+                                            <td>Actions</td>
+                                        </tr>
+                                        {% for i in objs %}
+                                            <tr>
+                                                <td>{{i.remaining_amount}}</td>
+                                                <td>{{i.to_date | date:'d-m-y'}}</td>
+                                                <td>{{i.from_date | date:'d-m-y'}}</td>
+                                                <td>{{i.today_date | date:'d-m-y'}}</td>
+                                                <td>{{i.id}}</td>
+                                                <td>{{i.amount}}</td>
+                                                <td><a href="{% url 'print-invoice' i.id %}" target="_blank">Print</a>&ensp; {% if request.user.is_superuser %}
+                                                    <a href="{% url 'delete-invoice' i.id %}" title="Delete"><span class="fa text-danger fa-lg fa-remove"></span></a>
+                                                {% endif %}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                {% else %}
+                                    <a>This Apartments Has No Invoices Right Now.</a>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <div class="row justify-content-around">
+                                    <div class="col-lg-8">
+                                        <button class="btn btn-primary" type="button" onclick="window.location.href='/new-invoice-form/{{aobj.id}}'">
+                                            Add New Invoice For This Apartment
+                                        </button>    
+                                    </div>
+                                    {% if request.user.is_superuser %}
+                                        <div class="col-lg-2">
+                                            <a href="/admin">
+                                                Admin
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    <div class="col-lg-2">
+                                        <a href="{% url 'logout' %}">
+                                            Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+
+    
+    </html>
