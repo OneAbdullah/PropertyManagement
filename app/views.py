@@ -253,7 +253,7 @@ def print_invoice(request,id):
             p.drawString(80, 447.5, "{}".format(obj[0].transfer_date.strftime("%d-%m-%Y")))
             p.drawString(225, 447.5, get_display(arabic_reshaper.reshape(obj[0].bank_of_transfer)))
 
-        p.drawString(360, 418, "{}".format(obj[0].apartment.type_of))
+        p.drawString(360, 418, "{}".format(get_display(arabic_reshaper.reshape(obj[0].apartment.type_of))))
 
         p.drawString(295, 418, "{}".format(obj[0].apartment.aprt_number))
 

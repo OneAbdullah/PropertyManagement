@@ -18,7 +18,7 @@
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-head text-center">
-                                Apartment Details
+                                تفاصيل المستأجر
                             </div>
                             <div class="card-body">
                                 {% if message %}
@@ -41,7 +41,7 @@
                                     <label>Comments</label>
                                     <textarea class="form-control" required name="note">{{aobj.note}} </textarea><br>
                                     <button class="btn btn-primary text-center" type="submit">
-                                        Save Changes
+                                        حفظ التغييرات
                                     </button>
                                 </form>
                             </div>
@@ -91,7 +91,7 @@
                                         {% endfor %}
                                     </table>
                                 {% else %}
-                                    <a>This Apartments Has No Invoices Right Now.</a>
+                                    <a>لايوجد سندات للعرض.</a>
                                 {% endif %}
                             </div>
                             <div class="card-footer">
@@ -110,7 +110,7 @@
                                     {% endif %}
                                     <div class="col-lg-2">
                                         <a href="{% url 'logout' %}">
-                                            Logout
+                                            تسجيل خروج
                                         </a>
                                     </div>
                                 </div>

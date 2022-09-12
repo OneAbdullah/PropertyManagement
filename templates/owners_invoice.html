@@ -38,7 +38,7 @@
                     <div class="col-lg-10">
                         <div class="card">
                             <div class="card-head text-center">
-                                <a href="{% url 'home' %}"><-Back</a>&ensp;&ensp;&ensp; Add New Building
+                                <a href="{% url 'home' %}"><-Back</a>&ensp;&ensp;&ensp; اضافة مبنى جديد
 
                                 <form method="post" id="sort-form">{% csrf_token %}</form>
                                 <div class="form-inline">
@@ -76,14 +76,14 @@
                                                 <td>{{i.today_date | date:'d-m-y'}}</td>
                                                 <td>{{i.id}}</td>
                                                 <td>{{i.amount}}</td>
-                                                <td><a href="{% url 'print-invoice' i.id %}" target="_blank">Print</a>&ensp; {% if request.user.is_superuser %}
+                                                <td><a href="{% url 'print-invoice' i.id %}" target="_blank">طباعة</a>&ensp; {% if request.user.is_superuser %}
                                                     <a href="{% url 'delete-invoice' i.id %}" title="Delete"><span class="fa text-danger fa-lg fa-remove"></span></a>
                                                 {% endif %}</td>
                                             </tr>
                                         {% endfor %}
                                     </table>
                                 {% else %}
-                                    <a>This Owner Has No Invoices Right Now.</a>
+                                    <a>لايوجد سندات مكتوبة</a>
                                 {% endif %}
                             </div>
                             <div class="card-footer">
